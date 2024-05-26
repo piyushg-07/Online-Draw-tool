@@ -26,4 +26,10 @@ io.on("connection", (socket) => {
   })
 });
 
-httpServer.listen(5000);
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
+
+httpServer.listen(5000, () => {
+  console.log("Server running on Port:5000");
+});
