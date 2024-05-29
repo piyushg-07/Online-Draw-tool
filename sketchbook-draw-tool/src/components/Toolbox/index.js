@@ -6,8 +6,8 @@ import { COLORS, MENU_ITEMS } from '@/constants';
 const Toolbox = () => {
   const dispatch = useDispatch();
   const activeMenuItem = useSelector((state) => state.menu.activeMenuItem);
-  const showStrokeToolOption = activeMenuItem === MENU_ITEMS.PENCIL;
-  const showBrushToolOption = activeMenuItem === MENU_ITEMS.PENCIL || activeMenuItem === MENU_ITEMS.ERASER;
+  const showStrokeToolOption = [MENU_ITEMS.PENCIL, MENU_ITEMS.SQUARE, MENU_ITEMS.CIRCLE, MENU_ITEMS.LINE, MENU_ITEMS.TEXT].includes(activeMenuItem);
+  const showBrushToolOption = [MENU_ITEMS.PENCIL, MENU_ITEMS.ERASER, MENU_ITEMS.SQUARE, MENU_ITEMS.CIRCLE, MENU_ITEMS.LINE, MENU_ITEMS.TEXT].includes(activeMenuItem);
   const { color, size } = useSelector((state) => state.toolbox[activeMenuItem]);
 
   const updateBrushSize = (e) => {
@@ -25,7 +25,7 @@ const Toolbox = () => {
         <div style={toolItemStyle}>
           <h4 style={toolTextStyle}>Stroke Color</h4>
           <div style={itemContainerStyle}>
-            {Object.values(COLORS).map((colorValue, index) => (
+            {Object.values(COLORS).slice(0, -1).map((colorValue, index) => (
               <div
                 key={index}
                 style={{

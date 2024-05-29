@@ -47,7 +47,6 @@ const Board = () => {
   }, [actionMenuItem, dispatch]);
 
 
-
   useEffect(() => {
     if (!canvasRef.current) return
     const canvas = canvasRef.current;
@@ -68,7 +67,7 @@ const Board = () => {
     return () => {
       socket.off('changeConfig', handleChangeConfig)
     }
-  }, [color, size])
+  }, [color, size]) 
 
   // before browser pain
   useLayoutEffect(() => {

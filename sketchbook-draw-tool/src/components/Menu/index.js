@@ -1,13 +1,25 @@
 import { useDispatch, useSelector } from 'react-redux'
 import cx from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPencil, faEraser, faRotateLeft, faRotateRight, faFileArrowDown } from '@fortawesome/free-solid-svg-icons'
+import { 
+  faPencil, 
+  faEraser, 
+  faSquare, 
+  faCircle, 
+  faRectangleWide, 
+  faMinus, 
+  faFont, 
+  faRotateLeft, 
+  faRotateRight, 
+  faFileArrowDown 
+} from '@fortawesome/free-solid-svg-icons'
 
 import styles from './index.module.css'
 
 import { menuItemClick, actionItemClick } from '@/slice/menuSlice'
 
 import { MENU_ITEMS } from '@/constants'
+
 const Menu = () => {
   const dispatch = useDispatch()
   const activeMenuItem = useSelector((state) => state.menu.activeMenuItem)
@@ -19,6 +31,7 @@ const Menu = () => {
   const handleActioItemClick = (itemName) => {
     dispatch(actionItemClick(itemName))
   }
+
   return (
     <div className={styles.menuContainer}>
       <div className={cx(styles.iconWrapper, { [styles.active]: activeMenuItem === MENU_ITEMS.PENCIL })} onClick={() => handleMenuClick(MENU_ITEMS.PENCIL)}>
@@ -35,6 +48,19 @@ const Menu = () => {
       </div>
       <div className={styles.iconWrapper} onClick={() => handleActioItemClick(MENU_ITEMS.DOWNLOAD)}>
         <FontAwesomeIcon icon={faFileArrowDown} className={styles.icon} />
+      </div>
+      {/* Icons for additional tools */}
+      <div className={cx(styles.iconWrapper)} onClick={() => handleMenuClick(MENU_ITEMS.SQUARE)}>
+        <FontAwesomeIcon icon={faSquare} className={styles.icon} />
+      </div>
+      <div className={cx(styles.iconWrapper)} onClick={() => handleMenuClick(MENU_ITEMS.CIRCLE)}>
+        <FontAwesomeIcon icon={faCircle} className={styles.icon} />
+      </div>
+      <div className={cx(styles.iconWrapper)} onClick={() => handleMenuClick(MENU_ITEMS.LINE)}>
+        <FontAwesomeIcon icon={faMinus} className={styles.icon} />
+      </div>
+      <div className={cx(styles.iconWrapper)} onClick={() => handleMenuClick(MENU_ITEMS.TEXT)}>
+        <FontAwesomeIcon icon={faFont} className={styles.icon} />
       </div>
     </div>
   )

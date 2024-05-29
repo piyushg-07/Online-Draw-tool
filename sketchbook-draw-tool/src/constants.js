@@ -13,7 +13,11 @@ const MENU_ITEMS = {
     ERASER: 'ERASER',
     UNDO: 'UNDO',
     REDO: 'REDO',
-    DOWNLOAD: 'DOWNLOAD'
-}
+    DOWNLOAD: 'DOWNLOAD',
+    SQUARE: 'SQUARE',
+    CIRCLE: 'CIRCLE',
+    LINE: 'LINE',
+    TEXT: 'TEXT'
+};
 
 export {COLORS, MENU_ITEMS}

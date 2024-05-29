@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { MENU_ITEMS, COLORS } from '@/constants'
+import { createSlice } from '@reduxjs/toolkit';
+import { MENU_ITEMS, COLORS } from '@/constants';
 
 const initialState = {
     [MENU_ITEMS.PENCIL]: {
@@ -13,21 +13,37 @@ const initialState = {
     [MENU_ITEMS.UNDO]: {},
     [MENU_ITEMS.REDO]: {},
     [MENU_ITEMS.DOWNLOAD]: {},
-}
+    [MENU_ITEMS.SQUARE]: {
+        color: COLORS.BLACK, 
+        size: 3 
+    },
+    [MENU_ITEMS.CIRCLE]: {
+        color: COLORS.BLACK, 
+        size: 3
+    },
+    [MENU_ITEMS.LINE]: {
+        color: COLORS.BLACK, 
+        size: 2 
+    },
+    [MENU_ITEMS.TEXT]: {
+        color: COLORS.BLACK, 
+        size: 3 
+    },
+};
 
 export const toolboxSlice = createSlice({
     name: 'toolbox',
     initialState,
     reducers: {
         changeColor: (state, action) => {
-            state[action.payload.item].color = action.payload.color
+            state[action.payload.item].color = action.payload.color;
         },
         changeBrushSize: (state, action) => {
-            state[action.payload.item].size = action.payload.size
+            state[action.payload.item].size = action.payload.size;
         }
     }
-})
+});
 
-export const {changeColor, changeBrushSize} = toolboxSlice.actions
+export const { changeColor, changeBrushSize } = toolboxSlice.actions;
 
-export default toolboxSlice.reducer
+export default toolboxSlice.reducer;
