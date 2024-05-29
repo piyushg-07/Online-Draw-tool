@@ -53,8 +53,6 @@ const Toolbox = () => {
 
 export default Toolbox;
 
-
-
 const toolboxContainerStyle = {
   padding: '1rem',
   position: 'absolute',
@@ -64,7 +62,7 @@ const toolboxContainerStyle = {
   borderRadius: '0.5rem',
   boxShadow: '0 0.125rem 0.25rem rgba(0, 0, 0, 0.2)',
   border: '1px solid #ccc',
-  backgroundColor: '#f9f9f9',
+  backgroundColor: 'rgba(249, 249, 249, 0.8)', // Change the alpha value here (0.8 for 80% opacity)
 };
 
 const toolItemStyle = {
