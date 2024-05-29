@@ -1,53 +1,97 @@
 import { useDispatch, useSelector } from 'react-redux';
 import cx from 'classnames';
+import { changeColor, changeBrushSize } from '@/slice/toolboxSlice';
+import { COLORS, MENU_ITEMS } from '@/constants';
 
-import styles from './index.module.css'
-import { changeColor, changeBrushSize } from '@/slice/toolboxSlice'
-
-
-import { COLORS, MENU_ITEMS } from '@/constants'
 const Toolbox = () => {
-  const dispatch = useDispatch()
-  const activeMenuItem = useSelector((state) => state.menu.activeMenuItem)
-  const showStrokeToolOption = activeMenuItem === MENU_ITEMS.PENCIL
-  const showBrushToolOption = activeMenuItem === MENU_ITEMS.PENCIL || activeMenuItem === MENU_ITEMS.ERASER
-  const { color, size } = useSelector((state) => state.toolbox[activeMenuItem])
-
-
+  const dispatch = useDispatch();
+  const activeMenuItem = useSelector((state) => state.menu.activeMenuItem);
+  const showStrokeToolOption = activeMenuItem === MENU_ITEMS.PENCIL;
+  const showBrushToolOption = activeMenuItem === MENU_ITEMS.PENCIL || activeMenuItem === MENU_ITEMS.ERASER;
+  const { color, size } = useSelector((state) => state.toolbox[activeMenuItem]);
 
   const updateBrushSize = (e) => {
-    dispatch(changeBrushSize({ item: activeMenuItem, size: e.target.value }))
-  }
+    dispatch(changeBrushSize({ item: activeMenuItem, size: e.target.value }));
+  };
 
   const updateColor = (newColor) => {
-    dispatch(changeColor({ item: activeMenuItem, color: newColor }))
+    dispatch(changeColor({ item: activeMenuItem, color: newColor }));
+  };
 
-  }
+
   return (
-    <div className={styles.toolboxContainer}>
-      {showStrokeToolOption && 
-      <div className={styles.toolItem}>
-        <h4 className={styles.toolText}>Stroke Color</h4>
-        <div className={styles.itemContainer}>
-          <div className={cx(styles.colorBox, { [styles.active]: color === COLORS.BLACK })} style={{ backgroundColor: COLORS.BLACK }} onClick={() => updateColor(COLORS.BLACK)} />
-          <div className={cx(styles.colorBox, { [styles.active]: color === COLORS.RED })} style={{ backgroundColor: COLORS.RED }} onClick={() => updateColor(COLORS.RED)} />
-          <div className={cx(styles.colorBox, { [styles.active]: color === COLORS.GREEN })} style={{ backgroundColor: COLORS.GREEN }} onClick={() => updateColor(COLORS.GREEN)} />
-          <div className={cx(styles.colorBox, { [styles.active]: color === COLORS.BLUE })} style={{ backgroundColor: COLORS.BLUE }} onClick={() => updateColor(COLORS.BLUE)} />
-          <div className={cx(styles.colorBox, { [styles.active]: color === COLORS.ORANGE })} style={{ backgroundColor: COLORS.ORANGE }} onClick={() => updateColor(COLORS.ORANGE)} />
-          <div className={cx(styles.colorBox, { [styles.active]: color === COLORS.YELLOW })} style={{ backgroundColor: COLORS.YELLOW }} onClick={() => updateColor(COLORS.YELLOW)} />
+    <div style={toolboxContainerStyle}>
+      {showStrokeToolOption &&
+        <div style={toolItemStyle}>
+          <h4 style={toolTextStyle}>Stroke Color</h4>
+          <div style={itemContainerStyle}>
+            {Object.values(COLORS).map((colorValue, index) => (
+              <div
+                key={index}
+                style={{
+                  ...colorBoxStyle,
+                  backgroundColor: colorValue,
+                  ...(color === colorValue && activeColorBoxStyle),
+                }}
+                onClick={() => updateColor(colorValue)}
+              />
+            ))}
+          </div>
         </div>
-      </div>
-       } 
+      }
       {showBrushToolOption &&
-      <div className={styles.toolItem}>
-        <h4 className={styles.toolText}>Brush Size</h4>
-        <div className={styles.itemContainer}>
-          <input type="range" min={1} max={10} step={1} onChange={updateBrushSize} value={size} />
+        <div style={toolItemStyle}>
+          <h4 style={toolTextStyle}>Brush Size</h4>
+          <div style={itemContainerStyle}>
+            <input type="range" min={1} max={10} step={1} onChange={updateBrushSize} value={size} />
+          </div>
         </div>
-      </div>
-       }
+      }
     </div>
-  )
-}
+  );
+};
 
-export default Toolbox
+export default Toolbox;
+
+
+
+const toolboxContainerStyle = {
+  padding: '1rem',
+  position: 'absolute',
+  top: '25%',
+  left: '5%',
+  width: '16rem',
+  borderRadius: '0.5rem',
+  boxShadow: '0 0.125rem 0.25rem rgba(0, 0, 0, 0.2)',
+  border: '1px solid #ccc',
+  backgroundColor: '#f9f9f9',
+};
+
+const toolItemStyle = {
+  marginBottom: '1rem',
+};
+
+const toolTextStyle = {
+  fontSize: '0.6875rem',
+  color: '#333',
+};
+
+const itemContainerStyle = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  marginTop: '0.5rem',
+};
+
+const colorBoxStyle = {
+  height: '0.9375rem',
+  width: '0.9375rem',
+  marginRight: '0.25rem',
+  borderRadius: '0.125rem',
+  cursor: 'pointer',
+};
+
+const activeColorBoxStyle = {
+  border: '1.5px solid #999',
+  padding: '0.5rem',
+  boxShadow: '0 0.15rem 0.25rem rgba(0, 0, 0, 0.2)',
+};
