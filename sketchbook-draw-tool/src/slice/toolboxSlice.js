@@ -15,11 +15,11 @@ const initialState = {
     [MENU_ITEMS.DOWNLOAD]: {},
     [MENU_ITEMS.SQUARE]: {
         color: COLORS.BLACK, 
-        size: 3 
+        size: 2 
     },
     [MENU_ITEMS.CIRCLE]: {
         color: COLORS.BLACK, 
-        size: 3
+        size: 2
     },
     [MENU_ITEMS.LINE]: {
         color: COLORS.BLACK, 
@@ -27,7 +27,7 @@ const initialState = {
     },
     [MENU_ITEMS.TEXT]: {
         color: COLORS.BLACK, 
-        size: 3 
+        size: 2 
     },
 };
 
