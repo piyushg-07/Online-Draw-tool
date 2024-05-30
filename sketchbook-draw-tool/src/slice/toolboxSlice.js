@@ -17,11 +17,19 @@ const initialState = {
         color: COLORS.BLACK, 
         size: 2 
     },
+    [MENU_ITEMS.Diamond]: {
+        color: COLORS.BLACK, 
+        size: 2 
+    },
     [MENU_ITEMS.CIRCLE]: {
         color: COLORS.BLACK, 
         size: 2
     },
     [MENU_ITEMS.LINE]: {
+        color: COLORS.BLACK, 
+        size: 2 
+    },
+    [MENU_ITEMS.ArrowLine]: {
         color: COLORS.BLACK, 
         size: 2 
     },

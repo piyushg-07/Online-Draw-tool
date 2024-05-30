@@ -10,14 +10,17 @@ import {
   faFont,
   faRotateLeft,
   faRotateRight,
-  faFileArrowDown
+  faFileArrowDown,
+  faArrowAltCircleRight,
+  faRhombus,
+  faDiamond
 } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './index.module.css';
 
 import { menuItemClick, actionItemClick } from '@/slice/menuSlice';
 
-import { MENU_ITEMS } from '@/constants';
+import { COLORS, MENU_ITEMS } from '@/constants';
 
 const Menu = () => {
   const dispatch = useDispatch();
@@ -54,10 +57,22 @@ const Menu = () => {
         <FontAwesomeIcon icon={faSquare} className={styles.icon} />
       </div>
       <div
+        className={cx(styles.iconWrapper, { [styles.active]: activeMenuItem === MENU_ITEMS.Diamond })}
+        onClick={() => handleMenuClick(MENU_ITEMS.Diamond)}
+      >
+        <FontAwesomeIcon icon={faDiamond} className={styles.icon} />
+      </div>
+      <div
         className={cx(styles.iconWrapper, { [styles.active]: activeMenuItem === MENU_ITEMS.CIRCLE })}
         onClick={() => handleMenuClick(MENU_ITEMS.CIRCLE)}
       >
         <FontAwesomeIcon icon={faCircle} className={styles.icon} />
+      </div>
+      <div
+        className={cx(styles.iconWrapper, { [styles.active]: activeMenuItem === MENU_ITEMS.ArrowLine })}
+        onClick={() => handleMenuClick(MENU_ITEMS.ArrowLine)}
+      >
+        <FontAwesomeIcon icon={faArrowAltCircleRight} className={styles.icon} />
       </div>
       <div
         className={cx(styles.iconWrapper, { [styles.active]: activeMenuItem === MENU_ITEMS.LINE })}

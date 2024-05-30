@@ -100,6 +100,24 @@ const Board = () => {
       context.strokeRect(startX, startY, width, height);
     };
 
+    const drawDiamond = (x, y, startX, startY) => {
+      const width = x - startX;
+      const height = y - startY;
+      const centerX = startX + width / 2;
+      const centerY = startY + height / 2;
+
+      redrawCanvas(context); // Redraw canvas to clear the previous preview
+
+      context.beginPath();
+      context.moveTo(centerX, startY); // Top
+      context.lineTo(startX, centerY); // Left
+      context.lineTo(centerX, startY + height); // Bottom
+      context.lineTo(startX + width, centerY); // Right
+      context.closePath();
+
+      context.stroke();
+    };
+
     const drawCircle = (x, y, startX, startY) => {
       const radius = Math.sqrt(Math.pow(x - startX, 2) + Math.pow(y - startY, 2));
       redrawCanvas(context); // Redraw canvas to clear the previous preview
@@ -114,6 +132,31 @@ const Board = () => {
       context.moveTo(startX, startY);
       context.lineTo(x, y);
       context.stroke();
+    };
+
+    const ArrowLine = (x, y, startX, startY) => {
+      redrawCanvas(context); // Redraw canvas to clear the previous preview
+      const arrowSize = 10; // Size of the arrowhead
+      const angle = Math.atan2(y - startY, x - startX);
+
+      // Draw the line
+      context.beginPath();
+      context.moveTo(startX, startY);
+      context.lineTo(x, y);
+      context.stroke();
+
+      // Draw the arrowhead
+      context.save();
+      context.translate(x, y);
+      context.rotate(angle);
+      context.beginPath();
+      context.moveTo(0, 0);
+      context.lineTo(-arrowSize, -arrowSize / 2);
+      context.lineTo(-arrowSize, arrowSize / 2);
+      context.closePath();
+      context.fillStyle = context.strokeStyle; // Arrowhead color matches line color
+      context.fill();
+      context.restore();
     };
 
     const erase = (x, y) => {
@@ -141,7 +184,12 @@ const Board = () => {
         drawCircle(x, y, startX.current, startY.current);
       } else if (activeMenuItem === MENU_ITEMS.LINE) {
         drawStraightLine(x, y, startX.current, startY.current);
-      } 
+      } else if (activeMenuItem === MENU_ITEMS.ArrowLine) {
+        ArrowLine(x, y, startX.current, startY.current);
+      }
+      else if (activeMenuItem === MENU_ITEMS.Diamond) {
+        drawDiamond(x, y, startX.current, startY.current);
+      }
       // else if (activeMenuItem === MENU_ITEMS.ERASER) {
       //   erase(x, y);
       // }

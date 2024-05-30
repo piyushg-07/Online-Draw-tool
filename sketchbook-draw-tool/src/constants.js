@@ -15,9 +15,11 @@ const MENU_ITEMS = {
     REDO: 'REDO',
     DOWNLOAD: 'DOWNLOAD',
     SQUARE: 'SQUARE',
+    Diamond:"Diamond",
     CIRCLE: 'CIRCLE',
     LINE: 'LINE',
-    TEXT: 'TEXT'
+    TEXT: 'TEXT',
+    ArrowLine:'ArrowLine'
 };
 
 export {COLORS, MENU_ITEMS}

@@ -6,8 +6,8 @@ import { COLORS, MENU_ITEMS } from '@/constants';
 const Toolbox = () => {
   const dispatch = useDispatch();
   const activeMenuItem = useSelector((state) => state.menu.activeMenuItem);
-  const showStrokeToolOption = [MENU_ITEMS.PENCIL, MENU_ITEMS.SQUARE, MENU_ITEMS.CIRCLE, MENU_ITEMS.LINE, MENU_ITEMS.TEXT].includes(activeMenuItem);
-  const showBrushToolOption = [MENU_ITEMS.PENCIL, MENU_ITEMS.ERASER, MENU_ITEMS.SQUARE, MENU_ITEMS.CIRCLE, MENU_ITEMS.LINE, MENU_ITEMS.TEXT].includes(activeMenuItem);
+  const showStrokeToolOption = [MENU_ITEMS.PENCIL, MENU_ITEMS.SQUARE, MENU_ITEMS.CIRCLE, MENU_ITEMS.LINE, MENU_ITEMS.TEXT, MENU_ITEMS.ArrowLine,MENU_ITEMS.Diamond].includes(activeMenuItem);
+  const showBrushToolOption = [MENU_ITEMS.PENCIL, MENU_ITEMS.ERASER, MENU_ITEMS.SQUARE, MENU_ITEMS.CIRCLE, MENU_ITEMS.LINE, MENU_ITEMS.TEXT, MENU_ITEMS.ArrowLine, MENU_ITEMS.Diamond].includes(activeMenuItem);
   const { color, size } = useSelector((state) => state.toolbox[activeMenuItem]);
 
   const updateBrushSize = (e) => {
@@ -56,8 +56,8 @@ export default Toolbox;
 const toolboxContainerStyle = {
   padding: '1rem',
   position: 'absolute',
-  top: '25%',
-  left: '5%',
+  top: '13%',
+  left: '2%',
   width: '16rem',
   borderRadius: '0.5rem',
   boxShadow: '0 0.125rem 0.25rem rgba(0, 0, 0, 0.2)',
