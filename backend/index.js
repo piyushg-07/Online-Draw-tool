@@ -21,6 +21,23 @@ io.on("connection", (socket) => {
     socket.broadcast.emit('drawLine', arg)
   })
 
+
+  socket.on('drawSquare', (shapeData) => {
+    socket.broadcast.emit('drawSquare', shapeData);
+  });
+
+  socket.on('drawCircle', (shapeData) => {
+    socket.broadcast.emit('drawCircle', shapeData);
+  });
+
+  socket.on('drawArrowLine', (shapeData) => {
+    socket.broadcast.emit('drawArrowLine', shapeData);
+  });
+
+  socket.on('drawDiamond', (shapeData) => {
+    socket.broadcast.emit('drawDiamond', shapeData);
+  });
+
   socket.on('changeConfig', (arg) => {
     socket.broadcast.emit('changeConfig', arg)
   })

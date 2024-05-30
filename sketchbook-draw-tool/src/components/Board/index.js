@@ -64,7 +64,6 @@ const Board = () => {
     };
 
     const handleChangeConfig = (config) => {
-      console.log("config", config);
       changeConfig(config.color, config.size);
     };
     changeConfig(color, size);
@@ -159,12 +158,6 @@ const Board = () => {
       context.restore();
     };
 
- 
-
-    const erase = (x, y) => {
-      context.clearRect(x - size / 2, y - size / 2, size, size);
-    };
-
     const handleMouseDown = (e) => {
       shouldDraw.current = true;
       startX.current = e.clientX || e.touches[0].clientX;
@@ -174,82 +167,122 @@ const Board = () => {
     };
 
     const handleMouseMove = (e) => {
-      if (!shouldDraw.current) return;
+      if (!canvasRef.current || !shouldDraw.current) return;
       const x = e.clientX || e.touches[0].clientX;
       const y = e.clientY || e.touches[0].clientY;
       if (activeMenuItem === MENU_ITEMS.PENCIL || activeMenuItem === MENU_ITEMS.ERASER) {
         drawLine(x, y);
         socket.emit('drawLine', { x, y });
-      } else if (activeMenuItem === MENU_ITEMS.SQUARE) {
-        drawSquare(x, y, startX.current, startY.current);
-      } else if (activeMenuItem === MENU_ITEMS.CIRCLE) {
-        drawCircle(x, y, startX.current, startY.current);
-      } else if (activeMenuItem === MENU_ITEMS.LINE) {
-        drawStraightLine(x, y, startX.current, startY.current);
-      } else if (activeMenuItem === MENU_ITEMS.ArrowLine) {
-        ArrowLine(x, y, startX.current, startY.current);
+      } else {
+        const shapeData = { x, y, startX: startX.current, startY: startY.current };
+        switch (activeMenuItem) {
+          case MENU_ITEMS.SQUARE:
+            drawSquare(x, y, startX.current, startY.current);
+            socket.emit('drawSquare', shapeData);
+            break;
+          case MENU_ITEMS.CIRCLE:
+            drawCircle(x, y, startX.current, startY.current);
+            socket.emit('drawCircle', shapeData);
+            break;
+          case MENU_ITEMS.LINE:
+            drawStraightLine(x, y, startX.current, startY.current);
+            socket.emit('drawLine', shapeData);
+            break
+            case MENU_ITEMS.ArrowLine:
+              ArrowLine(x, y, startX.current, startY.current);
+              socket.emit('drawArrowLine', shapeData);
+              break;
+            case MENU_ITEMS.Diamond:
+              drawDiamond(x, y, startX.current, startY.current);
+              socket.emit('drawDiamond', shapeData);
+              break;
+            default:
+              break;
+          }
+        }
+      };
+  
+      const handleMouseUp = (e) => {
+        shouldDraw.current = false;
+        const canvas = canvasRef.current;
+        const context = canvas.getContext('2d');
+        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+        drawHistory.current.push(imageData);
+        historyPointer.current = drawHistory.current.length - 1;
+      };
+  
+      const handleBeginPath = (path) => {
+        beginPath(path.x, path.y);
+      };
+  
+      const handleDrawLine = (path) => {
+        drawLine(path.x, path.y);
+      };
+  
+      canvas.addEventListener('mousedown', handleMouseDown);
+      canvas.addEventListener('mousemove', handleMouseMove);
+      canvas.addEventListener('mouseup', handleMouseUp);
+  
+      canvas.addEventListener('touchstart', handleMouseDown);
+      canvas.addEventListener('touchmove', handleMouseMove);
+      canvas.addEventListener('touchend', handleMouseUp);
+  
+      socket.on('beginPath', handleBeginPath);
+      socket.on('drawLine', handleDrawLine);
+      socket.on('drawSquare', (shapeData) => {
+        const { x, y, startX, startY } = shapeData;
+        drawSquare(x, y, startX, startY);
+      });
+      socket.on('drawCircle', (shapeData) => {
+        const { x, y, startX, startY } = shapeData;
+        drawCircle(x, y, startX, startY);
+      });
+      socket.on('drawLine', (shapeData) => {
+        const { x, y, startX, startY } = shapeData;
+        drawStraightLine(x, y, startX, startY);
+      });
+      socket.on('drawArrowLine', (shapeData) => {
+        const { x, y, startX, startY } = shapeData;
+        ArrowLine(x, y, startX, startY);
+      });
+      socket.on('drawDiamond', (shapeData) => {
+        const { x, y, startX, startY } = shapeData;
+        drawDiamond(x, y, startX, startY);
+      });
+  
+      return () => {
+        canvas.removeEventListener('mousedown', handleMouseDown);
+        canvas.removeEventListener('mousemove', handleMouseMove);
+        canvas.removeEventListener('mouseup', handleMouseUp);
+  
+        canvas.removeEventListener('touchstart', handleMouseDown);
+        canvas.removeEventListener('touchmove', handleMouseMove);
+        canvas.removeEventListener('touchend', handleMouseUp);
+  
+        socket.off('beginPath', handleBeginPath);
+        socket.off('drawLine', handleDrawLine);
+        socket.off('drawSquare');
+        socket.off('drawCircle');
+        socket.off('drawLine');
+        socket.off('drawArrowLine');
+        socket.off('drawDiamond');
+      };
+    }, [activeMenuItem]);
+  
+    useEffect(() => {
+      if (!canvasRef.current) return;
+      const canvas = canvasRef.current;
+      const context = canvas.getContext('2d');
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      if (drawHistory.current.length > 0) {
+        redrawCanvas(context);
       }
-      else if (activeMenuItem === MENU_ITEMS.Diamond) {
-        drawDiamond(x, y, startX.current, startY.current);
-      }
-      // else if (activeMenuItem === MENU_ITEMS.ERASER) {
-      //   erase(x, y);
-      // }
-    };
-
-    const handleMouseUp = (e) => {
-      shouldDraw.current = false;
-      const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-      drawHistory.current.push(imageData);
-      historyPointer.current = drawHistory.current.length - 1;
-    };
-
-    const handleBeginPath = (path) => {
-      beginPath(path.x, path.y);
-    };
-
-    const handleDrawLine = (path) => {
-      drawLine(path.x, path.y);
-    };
-
-    canvas.addEventListener('mousedown', handleMouseDown);
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('mouseup', handleMouseUp);
-
-    canvas.addEventListener('touchstart', handleMouseDown);
-    canvas.addEventListener('touchmove', handleMouseMove);
-    canvas.addEventListener('touchend', handleMouseUp);
-
-    socket.on('beginPath', handleBeginPath);
-    socket.on('drawLine', handleDrawLine);
-
-    return () => {
-      canvas.removeEventListener('mousedown', handleMouseDown);
-      canvas.removeEventListener('mousemove', handleMouseMove);
-      canvas.removeEventListener('mouseup', handleMouseUp);
-
-      canvas.removeEventListener('touchstart', handleMouseDown);
-      canvas.removeEventListener('touchmove', handleMouseMove);
-      canvas.removeEventListener('touchend', handleMouseUp);
-
-      socket.off('beginPath', handleBeginPath);
-      socket.off('drawLine', handleDrawLine);
-    };
-  }, [activeMenuItem]);
-
-  useEffect(() => {
-    if (!canvasRef.current) return;
-    const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    if (drawHistory.current.length > 0) {
-      redrawCanvas(context);
-    }
-  }, [activeMenuItem]);
-
-  return (
-    <canvas ref={canvasRef}></canvas>
-  );
-};
-
-export default Board;
+    }, [activeMenuItem]);
+  
+    return (
+      <canvas ref={canvasRef}></canvas>
+    );
+  };
+  
+  export default Board;
+  
