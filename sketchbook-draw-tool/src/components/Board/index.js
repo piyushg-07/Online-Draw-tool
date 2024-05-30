@@ -159,6 +159,8 @@ const Board = () => {
       context.restore();
     };
 
+ 
+
     const erase = (x, y) => {
       context.clearRect(x - size / 2, y - size / 2, size, size);
     };

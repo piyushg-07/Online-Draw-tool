@@ -36,6 +36,7 @@ const Menu = () => {
 
   return (
     <div className={styles.menuContainer}>
+      
       <div
         className={cx(styles.iconWrapper, { [styles.active]: activeMenuItem === MENU_ITEMS.PENCIL })}
         onClick={() => handleMenuClick(MENU_ITEMS.PENCIL)}

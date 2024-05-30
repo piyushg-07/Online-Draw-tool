@@ -56,7 +56,7 @@ export default Toolbox;
 const toolboxContainerStyle = {
   padding: '1rem',
   position: 'absolute',
-  top: '13%',
+  top: '15%',
   left: '2%',
   width: '16rem',
   borderRadius: '0.5rem',
