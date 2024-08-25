@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <>
       <div>
-        <h1 className="text-center mt-2 text-3xl">Online-DrawTool</h1>
+        <h1 className="text-center mt-2 text-3xl">DoodleCanvas Tool</h1>
       </div>
 
       <Menu />
